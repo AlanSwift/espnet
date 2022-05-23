@@ -38,12 +38,19 @@ source activate espnet
 
 
 echo "Download espnet"
-WORK_DIR=/home/v-shenkai/download/
-mkdir -p $WORK_DIR
-cd $WORK_DIR
+HOME_DIR=/home/v-shenkai/
+DOWNLOAD_DIR=/home/v-shenkai/download/
+mkdir -p $DOWNLOAD_DIR
+cd $DOWNLOAD_DIR
 git clone https://github.com/AlanSwift/espnet.git
 cd espnet
 
 echo "Install espnet"
 cd tools
 make
+
+echo "Copy features to native storage to speed up inference"
+mkdir -p $HOME_DIR/wenet
+cp -r /blob/v-shenkai/data/wenet/dataset/wenet_exp/wenet/dump $HOME_DIR/wenet/
+
+
