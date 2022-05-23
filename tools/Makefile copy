@@ -44,30 +44,30 @@ ifeq ($(strip $(CPU_ONLY)),)
 else
 	@echo Perform on CPU mode: CPU_ONLY=$(CPU_ONLY)
 endif
-	@echo PYTHON=$(shell command -v python3)
-	@echo PYTHON_VERSION=$(shell python3 --version)
+	@echo PYTHON=$(shell . ./activate_python.sh && command -v python3)
+	@echo PYTHON_VERSION=$(shell . ./activate_python.sh && python3 --version)
 	@echo USE_CONDA=$(USE_CONDA)
 	@echo TH_VERSION=$(TH_VERSION)
 
 #########################################
 
 bc.done: activate_python.sh
-	{ command -v bc || conda install -y bc -c conda-forge; }
+	. ./activate_python.sh && { command -v bc || conda install -y bc -c conda-forge; }
 	touch bc.done
 cmake.done: activate_python.sh
-	{ command -v cmake || conda install -y cmake; }
+	. ./activate_python.sh && { command -v cmake || conda install -y cmake; }
 	touch cmake.done
 flac.done: activate_python.sh
-	{ command -v flac || conda install -y libflac -c conda-forge; }
+	. ./activate_python.sh && { command -v flac || conda install -y libflac -c conda-forge; }
 	touch flac.done
 ffmpeg.done: activate_python.sh
-	{ command -v ffmpeg || conda install -y ffmpeg -c conda-forge; }
+	. ./activate_python.sh && { command -v ffmpeg || conda install -y ffmpeg -c conda-forge; }
 	touch ffmpeg.done
 sox.done: activate_python.sh
-	{ command -v sox || conda install -y sox -c conda-forge; }
+	. ./activate_python.sh && { command -v sox || conda install -y sox -c conda-forge; }
 	touch sox.done
 sndfile.done: activate_python.sh
-	{ python3 -c "from ctypes.util import find_library as F; assert F('sndfile') is not None" || conda install -y libsndfile=1.0.28 -c conda-forge; }
+	. ./activate_python.sh && { python3 -c "from ctypes.util import find_library as F; assert F('sndfile') is not None" || conda install -y libsndfile=1.0.28 -c conda-forge; }
 	touch sndfile.done
 ifneq ($(strip $(USE_CONDA)),)
 conda_packages.done: bc.done cmake.done flac.done ffmpeg.done sox.done sndfile.done
@@ -85,28 +85,28 @@ sph2pipe.done:
 	touch sph2pipe.done
 
 packaging.done: activate_python.sh
-	python3 -m pip install packaging
+	. ./activate_python.sh && python3 -m pip install packaging
 	touch packaging.done
 
 pytorch.done: activate_python.sh packaging.done
 ifeq ($(strip $(USE_CONDA)),)
 	# NOTE(kan-bayashi): Temporary fixed numpy version
-	pip install "numpy<=1.21.3"
-	./installers/install_torch.sh "false" "${TH_VERSION}" "${CUDA_VERSION}"
+	. ./activate_python.sh && pip install "numpy<=1.21.3"
+	. ./activate_python.sh && ./installers/install_torch.sh "false" "${TH_VERSION}" "${CUDA_VERSION}"
 else
 	# NOTE(kan-bayashi): Temporary fixed numpy version
-	conda install -y "numpy<=1.21.3"
-	./installers/install_torch.sh "true" "${TH_VERSION}" "${CUDA_VERSION}"
+	. ./activate_python.sh && conda install -y "numpy<=1.21.3"
+	. ./activate_python.sh && ./installers/install_torch.sh "true" "${TH_VERSION}" "${CUDA_VERSION}"
 endif
 	touch pytorch.done
 
 # NOTE(kamo): conda_packages is not necessary for installation of espnet, but add it the dependencies just in case.
 espnet.done: pytorch.done conda_packages.done
-	python3 -m pip install -e "..[train, recipe]"  # Install editable mode by default
+	. ./activate_python.sh && python3 -m pip install -e "..[train, recipe]"  # Install editable mode by default
 	touch espnet.done
 
 chainer.done: espnet.done
-	./installers/install_chainer.sh "${CUDA_VERSION}"
+	. ./activate_python.sh && ./installers/install_chainer.sh "${CUDA_VERSION}"
 	touch chainer.done
 
 # NOTE(kamo): Add conda_packages.done if cmake is used
@@ -114,16 +114,16 @@ warp-ctc.done: pytorch.done conda_packages.done
 ifeq ($(strip $(CPU_ONLY)),)
 	[ -n "${CUDA_HOME}" ] || { echo -e "Error: CUDA_HOME is not set.\n    $$ . ./setup_cuda_env.sh <cuda-root>"; exit 1; }
 endif
-	./installers/install_warp-ctc.sh
+	. ./activate_python.sh && ./installers/install_warp-ctc.sh
 	touch warp-ctc.done
 
 warp-transducer.done: pytorch.done conda_packages.done
 ifeq ($(strip $(CPU_ONLY)),)
 	[ -n "${CUDA_HOME}" ] || { echo -e "Error: CUDA_HOME is not set.\n    $$ . ./setup_cuda_env.sh <cuda-root>"; exit 1; }
-	./installers/install_warp-transducer.sh
+	. ./activate_python.sh && ./installers/install_warp-transducer.sh
 	touch warp-transducer.done
 else
-	./installers/install_warp-transducer.sh
+	. ./activate_python.sh && ./installers/install_warp-transducer.sh
 	touch warp-transducer.done
 endif
 
@@ -131,7 +131,7 @@ chainer_ctc.done: chainer.done
 ifeq ($(strip $(CPU_ONLY)),)
 	[ -n "${CUDA_HOME}" ] || { echo -e "Error: CUDA_HOME is not set.\n    $$ . ./setup_cuda_env.sh <cuda-root>"; exit 1; }
 endif
-	./installers/install_chainer_ctc.sh
+	. ./activate_python.sh && ./installers/install_chainer_ctc.sh
 	touch chainer_ctc.done
 
 nkf.done:
@@ -139,15 +139,15 @@ nkf.done:
 	touch nkf.done
 
 pyopenjtalk.done: espnet.done conda_packages.done
-	./installers/install_pyopenjtalk.sh
+	. ./activate_python.sh && ./installers/install_pyopenjtalk.sh
 	touch pyopenjtalk.done
 
 phonemizer.done: espnet.done conda_packages.done
-	./installers/install_phonemizer.sh
+	. ./activate_python.sh && ./installers/install_phonemizer.sh
 	touch phonemizer.done
 
 speechbrain.done: espnet.done conda_packages.done
-	./installers/install_speechbrain.sh
+	. ./activate_python.sh && ./installers/install_speechbrain.sh
 	touch speechbrain.done
 
 moses.done:
@@ -159,7 +159,7 @@ mwerSegmenter.done:
 	touch mwerSegmenter.done
 
 kenlm.done: espnet.done conda_packages.done
-	./installers/install_kenlm.sh
+	. ./activate_python.sh && ./installers/install_kenlm.sh
 	touch kenlm.done
 
 pesq: PESQ/P862_annex_A_2005_CD/source/PESQ
@@ -167,7 +167,7 @@ PESQ/P862_annex_A_2005_CD/source/PESQ:
 	./installers/install_pesq.sh
 
 py3mmseg.done: espnet.done
-	./installers/install_py3mmseg.sh
+	. ./activate_python.sh && ./installers/install_py3mmseg.sh
 	touch py3mmseg.done
 
 beamformit.done:
@@ -175,35 +175,35 @@ beamformit.done:
 	touch beamformit.done
 
 torch_optimizer.done: espnet.done
-	./installers/install_torch_optimizer.sh
+	. ./activate_python.sh && ./installers/install_torch_optimizer.sh
 	touch torch_optimizer.done
 
 fairscale.done: espnet.done
-	./installers/install_fairscale.sh
+	. ./activate_python.sh && ./installers/install_fairscale.sh
 	touch fairscale.done
 
 fairseq.done: espnet.done
-	./installers/install_fairseq.sh
+	. ./activate_python.sh && ./installers/install_fairseq.sh
 	touch fairseq.done
 
 s3prl.done: espnet.done
-	./installers/install_s3prl.sh
+	. ./activate_python.sh && ./installers/install_s3prl.sh
 	touch s3prl.done
 
 k2.done: espnet.done
-	./installers/install_k2.sh
+	. ./activate_python.sh && ./installers/install_k2.sh
 	touch k2.done
 
 gtn.done: espnet.done
-	./installers/install_gtn.sh
+	. ./activate_python.sh && ./installers/install_gtn.sh
 	touch gtn.done
 
 transformers.done: espnet.done
-	./installers/install_transformers.sh
+	. ./activate_python.sh && ./installers/install_transformers.sh
 	touch transformers.done
 
 longformer.done: espnet.done
-	./installers/install_longformer.sh
+	. ./activate_python.sh && ./installers/install_longformer.sh
 	touch longformer.done
 
 check_install: python
