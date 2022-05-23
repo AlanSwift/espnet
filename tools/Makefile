@@ -85,7 +85,7 @@ sph2pipe.done:
 	touch sph2pipe.done
 
 packaging.done: activate_python.sh
-	. ./activate_python.sh && python3 -m pip install packaging
+	python3 -m pip install packaging
 	touch packaging.done
 
 pytorch.done: activate_python.sh packaging.done

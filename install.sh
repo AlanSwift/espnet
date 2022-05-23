@@ -69,11 +69,11 @@ cp -r /blob/v-shenkai/envs/.bashrc /home/v-shenkai/
 echo "Finish installing"
 
 
-sudo apt-get install cmake
-sudo apt-get install sox
-sudo apt-get install libsndfile1-dev
-sudo apt-get install ffmpeg
-sudo apt-get install flac
+sudo apt-get install cmake -y
+sudo apt-get install sox -y
+sudo apt-get install libsndfile1-dev -y
+sudo apt-get install ffmpeg -y
+sudo apt-get install flac -y
 
 
 # install espnet
