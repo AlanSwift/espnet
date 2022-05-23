@@ -101,8 +101,10 @@ make
 
 echo "Copy features to native storage to speed up inference"
 mkdir -p $HOME_DIR/wenet
-cp -r /blob/v-shenkai/data/wenet/dataset/wenet_exp/wenet/dump $HOME_DIR/wenet/
-cp -r /blob/v-shenkai/data/wenet/dataset/wenet_exp_new/exp $HOME_DIR/wenet/
+ln -s /blob/v-shenkai/data/wenet/dataset/wenet_exp/wenet/dump $HOME_DIR/wenet
+ln -s /blob/v-shenkai/data/wenet/dataset/wenet_exp_new/exp $HOME_DIR/wenet
+# cp -r /blob/v-shenkai/data/wenet/dataset/wenet_exp/wenet/dump $HOME_DIR/wenet/
+# cp -r /blob/v-shenkai/data/wenet/dataset/wenet_exp_new/exp $HOME_DIR/wenet/
 ln -s /blob/v-shenkai/data/wenet/dataset/wenet_exp/wenet/untar /home/v-shenkai/wenet/untar
 
 echo "Inference"
