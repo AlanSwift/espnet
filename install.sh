@@ -53,4 +53,7 @@ echo "Copy features to native storage to speed up inference"
 mkdir -p $HOME_DIR/wenet
 cp -r /blob/v-shenkai/data/wenet/dataset/wenet_exp/wenet/dump $HOME_DIR/wenet/
 
+echo "Inference"
+cd $DOWNLOAD_DIR/espnet/egs2/wenetspeech/asr1
+
 
