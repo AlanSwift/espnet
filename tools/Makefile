@@ -207,7 +207,7 @@ longformer.done: espnet.done
 	touch longformer.done
 
 check_install: python
-	. ./activate_python.sh; . ./extra_path.sh; python3 check_install.py
+	. ./extra_path.sh; python3 check_install.py
 
 clean: clean_extra
 	rm -rf warp-ctc warp-transducer chainer_ctc
