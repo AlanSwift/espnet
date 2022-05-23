@@ -3,7 +3,7 @@
 scp_path=/home/v-shenkai/wenet/dump/raw/train_L/wav.scp
 output_path=/blob/v-shenkai/data/wenet/inference/train/
 split_scps=""
-_nj=100
+_nj=200
 
 for n in $(seq "${_nj}"); do
     mkdir -p ${output_path}/${n}
