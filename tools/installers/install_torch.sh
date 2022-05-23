@@ -62,7 +62,7 @@ install_torch(){
             # https://anaconda.org/anaconda/cudatoolkit/files
 
             # https://anaconda.org/nvidia/cudatoolkit/files
-            cudatoolkit_channel=nvidia
+            cudatoolkit_channel=pytorch
 
             # https://anaconda.org/conda-forge/cudatoolkit/files
             # cudatoolkit_channel=conda-forge

@@ -32,21 +32,18 @@ source /home/v-shenkai/.bashrc
 echo "create conda env: espnet"
 conda create -n espnet python=3.7 -y
 source activate espnet
-conda install pytorch torchvision torchaudio cudatoolkit=11.1 -c pytorch
+# conda install pytorch torchvision torchaudio cudatoolkit=11.1 -c pytorch
 
 
 
 
-
+echo "Download espnet"
 WORK_DIR=/home/v-shenkai/download/
 mkdir -p $WORK_DIR
 cd $WORK_DIR
 git clone https://github.com/AlanSwift/espnet.git
 cd espnet
 
-echo "Generate anaconda activate file"
-echo -e "#!/usr/bin/env bash
-if [ -z "${PS1:-}" ]; then
-    PS1=__dummy__
-fi
-. /home/v-shenkai/download/espnet/tools/anaconda/etc/profile.d/conda.sh && conda deactivate && conda activate espnet" > tools/activate_python.sh
+echo "Install espnet"
+cd tools
+make
