@@ -11,17 +11,17 @@ endif
 
 # Set if install binaries on CPU mode e.g. make CPU_ONLY=0
 # If you don't have nvcc, this value will be set automatically
-ifneq ($(shell which nvcc 2>/dev/null),)
-CPU_ONLY :=
-# Derive CUDA version from nvcc
-CUDA_VERSION := $(shell nvcc --version | grep "Cuda compilation tools" | cut -d" " -f5 | sed s/,//)
-CUDA_VERSION_WITHOUT_DOT := $(strip $(subst .,,$(CUDA_VERSION)))
+# ifneq ($(shell which nvcc 2>/dev/null),)
+# CPU_ONLY :=
+# # Derive CUDA version from nvcc
+# CUDA_VERSION := $(shell nvcc --version | grep "Cuda compilation tools" | cut -d" " -f5 | sed s/,//)
+# CUDA_VERSION_WITHOUT_DOT := $(strip $(subst .,,$(CUDA_VERSION)))
 
-else
+# else
 CPU_ONLY := 0
 CUDA_VERSION :=
 CUDA_VERSION_WITHOUT_DOT :=
-endif
+# endif
 
 
 .PHONY: all clean
