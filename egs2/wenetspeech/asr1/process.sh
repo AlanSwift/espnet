@@ -1,5 +1,6 @@
 scp_path=/home/v-shenkai/wenet/dump/raw/train_L/wav.scp
-output_path=/home/v-shenkai/wenet/dump/raw/infer_train_
+output_path=/blob/v-shenkai/data/wenet/dataset/wenet_exp/wenet/dump/raw/infer_train_
+# output_path=/home/v-shenkai/wenet/dump/raw/infer_train_
 split_scps=""
 _nj=95
 
