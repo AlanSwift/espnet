@@ -43,12 +43,12 @@ model_conf:
 # minibatch related
 num_workers: 2
 batch_type: numel
-batch_bins: 100000000
+batch_bins: 80000000
 
 # optimization related
 accum_grad: 4
 grad_clip: 5
-max_epoch: 30
+max_epoch: 100
 val_scheduler_criterion:
     - valid
     - acc
@@ -56,11 +56,11 @@ best_model_criterion:
 -   - valid
     - acc
     - max
-keep_nbest_models: 10
+keep_nbest_models: 100
 
 optim: adam
 optim_conf:
-   lr: 0.0015
+   lr: 0.0005
 scheduler: warmuplr
 scheduler_conf:
    warmup_steps: 30000

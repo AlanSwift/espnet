@@ -427,13 +427,13 @@ class Trainer:
                         suffix=f"till{iepoch}epoch",
                     )
 
-                for e in range(1, iepoch):
-                    p = output_dir / f"{e}epoch.pth"
-                    if p.exists() and e not in nbests:
-                        p.unlink()
-                        _removed.append(str(p))
-                if len(_removed) != 0:
-                    logging.info("The model files were removed: " + ", ".join(_removed))
+                # for e in range(1, iepoch):
+                #     p = output_dir / f"{e}epoch.pth"
+                #     if p.exists() and e not in nbests:
+                #         p.unlink()
+                #         _removed.append(str(p))
+                # if len(_removed) != 0:
+                #     logging.info("The model files were removed: " + ", ".join(_removed))
 
             # 7. If any updating haven't happened, stops the training
             if all_steps_are_invalid:
